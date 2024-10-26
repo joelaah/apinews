@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "292197273646",
+    "project_id": "ownapinews",
+    "storage_bucket": "ownapinews.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292197273646:android:af3e655e1b2572d2b88fbf",
+        "android_client_info": {
+          "package_name": "com.example.news_ownapi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD16wTB8iP5FoXdruZ5lLnwfJ4cMxzE0Iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
