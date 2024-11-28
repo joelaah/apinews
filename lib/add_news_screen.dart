@@ -9,10 +9,10 @@ class AddNewsScreen extends StatefulWidget {
   const AddNewsScreen({super.key});
 
   @override
-  _AddNewsScreenState createState() => _AddNewsScreenState();
+  AddNewsScreenState createState() => AddNewsScreenState();
 }
 
-class _AddNewsScreenState extends State<AddNewsScreen> {
+class AddNewsScreenState extends State<AddNewsScreen> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
   final TextEditingController authorController = TextEditingController();
@@ -41,18 +41,12 @@ class _AddNewsScreenState extends State<AddNewsScreen> {
       // Upload the image file to Firebase Storage
       UploadTask uploadTask = storageReference.putFile(image);
 
-      // Wait for the upload to complete
-      TaskSnapshot snapshot = await uploadTask;
-
       // Check if upload completes successfully
+      TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
       if (snapshot.state == TaskState.success) {
         // If upload is successful, get the download URL
         String downloadURL = await snapshot.ref.getDownloadURL();
         print('Upload successful. Image URL: $downloadURL');
-
-        // Store the image URL in Firestore
-        await saveImageURL(downloadURL);
-
         return downloadURL;
       } else {
         throw FirebaseException(
@@ -61,19 +55,7 @@ class _AddNewsScreenState extends State<AddNewsScreen> {
       }
     } catch (e) {
       print('Error uploading image: $e');
-      throw e; // Rethrow the error for further handling if needed
-    }
-  }
-
-  Future<void> saveImageURL(String url) async {
-    try {
-      await FirebaseFirestore.instance.collection('images').add({
-        'url': url,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-      print('Image URL saved to Firestore successfully.');
-    } catch (e) {
-      print('Error saving image URL to Firestore: $e');
+      rethrow;
     }
   }
 
@@ -83,7 +65,8 @@ class _AddNewsScreenState extends State<AddNewsScreen> {
     if (user != null && user.uid == adminUid) {
       String imageUrl = '';
       if (_pickedImage != null) {
-        imageUrl = await uploadImage(_pickedImage!); // Upload image and get URL
+        // Upload image and get URL
+        imageUrl = await uploadImage(_pickedImage!);
       }
 
       await FirebaseFirestore.instance.collection('news').add({
@@ -95,11 +78,11 @@ class _AddNewsScreenState extends State<AddNewsScreen> {
       });
 
       if (mounted) {
-        Navigator.pop(context);
-      } // Close the form after submission
+        Navigator.pop(context); // Close the form after submission
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Only admins can add news.')),
+        const SnackBar(content: Text('Only admins can add news.')),
       );
     }
   }
@@ -107,25 +90,25 @@ class _AddNewsScreenState extends State<AddNewsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add News')),
+      appBar: AppBar(title: const Text('Add News')),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
             TextField(
               controller: contentController,
-              decoration: InputDecoration(labelText: 'Content'),
+              decoration: const InputDecoration(labelText: 'Content'),
               maxLines: 5,
             ),
             TextField(
               controller: authorController,
-              decoration: InputDecoration(labelText: 'Author'),
+              decoration: const InputDecoration(labelText: 'Author'),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _pickedImage != null
                 ? Image.file(
                     _pickedImage!,
@@ -135,13 +118,13 @@ class _AddNewsScreenState extends State<AddNewsScreen> {
                   )
                 : TextButton.icon(
                     onPressed: pickImage, // Pick image from gallery
-                    icon: Icon(Icons.image),
-                    label: Text('Pick an image'),
+                    icon: const Icon(Icons.image),
+                    label: const Text('Pick an image'),
                   ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: addNews,
-              child: Text('Submit News'),
+              child: const Text('Submit News'),
             ),
           ],
         ),
@@ -149,3 +132,4 @@ class _AddNewsScreenState extends State<AddNewsScreen> {
     );
   }
 }
+

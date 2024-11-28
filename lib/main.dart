@@ -8,7 +8,7 @@ import 'login_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: AuthGate(),
+      home: const AuthGate(),
       routes: {
         '/add-news': (ctx) => AddNewsScreen(),
       },
@@ -26,18 +26,20 @@ class MyApp extends StatelessWidget {
 }
 
 class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasData) {
-          return NewsListScreen(); // Show the news list if authenticated
+          return const NewsListScreen(); // Show the news list if authenticated
         } else {
-          return LoginScreen(); // Show login screen if not authenticated
+          return const LoginScreen(); // Show login screen if not authenticated
         }
       },
     );
