@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,6 +7,40 @@ import 'package:news_ownapi/news_list_screen.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
+  //facebook login to be implemented later after firebase configuration
+  // Future<void> _signInWithFacebook(BuildContext context) async {
+  //   try {
+  //     // Attempt Facebook login
+  //     final result = await FacebookAuth.instance.login();
+
+  //     if (result.status == LoginStatus.success) {
+  //       // Successfully logged in, no need to manually handle the token
+  //       final accessToken = result.accessToken;
+
+  //       if (accessToken != null) {
+  //         // Sign in with Firebase using Facebook's access token
+  //         final OAuthCredential credential =
+  //             FacebookAuthProvider.credential(accessToken.token);
+  //         await FirebaseAuth.instance.signInWithCredential(credential);
+
+  //         // Navigate to the next screen upon successful login
+  //         Navigator.of(context).pushReplacement(
+  //           MaterialPageRoute(builder: (context) => const NewsListScreen()),
+  //         );
+  //       }
+  //     } else {
+  //       // Handle the failure case
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Facebook sign-in failed: ${result.message}')),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     // Handle errors
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Error during Facebook sign-in: $e')),
+  //     );
+  //   }
+  // }
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -41,6 +76,7 @@ class LoginPage extends StatelessWidget {
     } catch (e) {
       return handleAuthError(e); // Handle errors (e.g., email not found)
     }
+    return null;
   }
 
 // Error handling function for Firebase Authentication errors
@@ -165,14 +201,15 @@ class LoginPage extends StatelessWidget {
               ElevatedButton.icon(
                 icon: const Icon(Icons.facebook),
                 label: const Text('Facebook'),
-                onPressed: () async {
-                  // Implement Facebook Sign-In logic here
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue, // Facebook button color
-                  foregroundColor: Colors.white,
+                  foregroundColor: Colors.white, // White text and icon
                 ),
-              ),
+)
+
+
+
             ],
           ),
         ),
